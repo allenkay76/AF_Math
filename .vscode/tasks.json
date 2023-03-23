@@ -1,0 +1,131 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C/C++: g++.exe AF_Math build windows DLL DEBUG 64bit",  // A label for the command
+            "type": "shell",  // Specifies that this is a shell command
+            "command": "g++",  // The command to execute (g++)
+            "args": [  // The arguments to pass to the command
+                "-fdiagnostics-color=always",  // Output diagnostic messages in color
+                "-g",  // Generate debugging information
+                "-I${workspaceFolder}/include",  // Add the include directory to the search path
+                "${workspaceFolder}/src/*.cpp",  // Compile all .cpp files in the source directory
+                //"-c",  // Compile only, do not link
+                "-Wall",  // Enable all warnings
+                "-Wextra",  // Enable extra warnings
+                "-Werror",  // Treat warnings as errors
+                "-pedantic",  // Issue all the mandatory diagnostics listed by the C++ standard
+                "-Wformat-security",  // Warn about format string vulnerabilities
+                "-Wnull-dereference",  // Warn about null pointer dereference
+                "-Wshadow",  // Warn about variable shadowing
+                "-fstack-protector-strong",  // Enable stack protection
+                "-D_FORTIFY_SOURCE=2",  // Enable fortified source code
+                "-shared",  // Create a shared library/DLL
+                "-DAF_MATH_EXPORTS",
+                "-o",  // Specify the output file
+                "${workspaceFolder}/bin/AF_Math.dll",  // The output file name and location
+                //"-static-libgcc",  // Link against libgcc statically
+                //"-static-libstdc++"//, // <-- add missing comma here
+                //"-m32"  // Compile for 64-bit architecture
+            ],
+
+            "options": {
+                "cwd": "${workspaceFolder}"  // Set the current working directory to the workspace folder
+            },
+            "problemMatcher": [
+                "$gcc",
+                {
+                    "owner": "cpp",
+                    "severity": "warning",
+                    "fileLocation": "absolute",
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiles the AF_Math library with g++ for Windows",  // A brief description of the task
+            "dependsOn": "clean",  // This task depends on the "clean" task to run first
+            "windows": {
+                "args": [  // Additional arguments for Windows
+                    
+                ]
+            },
+            "env": {
+                "PATH": "${env.PATH};${workspaceFolder}/bin"  // Add the binary directory to the PATH environment variable
+            }
+        },        
+        {
+            "label": "archive",
+            "type": "shell",
+            "command": "ar",
+            "args": [
+                "rcs",
+                "${workspaceFolder}/lib/AF_Math.lib",
+                "${workspaceFolder}/obj/*.o"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build",
+            "detail": "Archives the object files into the AF_Math static library",
+            "dependsOn": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            // Defines a task named "clean"
+            "label": "clean",
+            // Specifies that the task is a shell command
+            "type": "shell",
+            // Defines the command to run to clean the workspace
+            "command": "${command:clean}",
+            // Specifies any arguments to pass to the command
+            "args": [
+                "${args:clean}"
+            ],
+            // Defines the problem matcher used to capture output messages and errors from the task
+            "problemMatcher": [],
+            // Specifies that this task belongs to the "build" group
+            "group": "build",
+            // Defines how to clean the workspace on Windows
+            "windows": {
+                // Specifies the command prompt as the command to run
+                "command": "cmd",
+                // Defines the arguments to pass to the command prompt to remove the files and folders
+                "args": [
+                    "/C", // Run the command within a cmd.exe shell
+                    "del", // The command to delete files
+                    "/F", // Forces deletion of read-only files
+                    "/Q", // Quiet mode, do not ask for confirmation
+                    "${workspaceFolder}\\bin\\*",
+                    "${workspaceFolder}\\obj\\*",
+                    "${workspaceFolder}\\lib\\*"
+                ]
+            },
+            // Defines how to clean the workspace on Linux
+            "linux": {
+                // Specifies the command to run to remove the files and folders
+                "command": "rm",
+                // Defines the arguments to pass to the command to remove the files and folders
+                "args": [
+                    "-f",
+                    "${workspaceFolder}/bin/AF_Math"
+                ]
+            }
+        }
+    ]
+}

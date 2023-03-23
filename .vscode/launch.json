@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug AF_Math Windows DLL 64bit",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/AF_Math.dll", // Change the program to the generated DLL
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "preLaunchTask": "C/C++: g++.exe AF_Math build windows DLL DEBUG 64bit", // Change to the label of the previous task
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Load AF_Math library",
+                    "text": "file ${workspaceFolder}/bin/AF_Math.dll", // Change to the generated DLL
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/usr/bin/gdb"
+        }
+        
+    ]
+}
