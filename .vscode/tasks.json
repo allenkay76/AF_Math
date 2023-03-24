@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "C/C++: g++.exe AF_Math build windows DLL DEBUG 64bit",  // A label for the command
+            "label": "BUILD_AF_Math_Win32_DLL",  // A label for the command
             "type": "shell",  // Specifies that this is a shell command
             "command": "g++",  // The command to execute (g++)
             "args": [  // The arguments to pass to the command
@@ -32,14 +32,14 @@
             "options": {
                 "cwd": "${workspaceFolder}"  // Set the current working directory to the workspace folder
             },
-            "problemMatcher": [
+            "problemMatcher": [ // The problem matcher to use
                 "$gcc",
                 {
-                    "owner": "cpp",
-                    "severity": "warning",
-                    "fileLocation": "absolute",
-                    "pattern": {
-                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning):\\s+(.*)$",
+                    "owner": "cpp", // The owner of the problem matcher
+                    "severity": "warning", // The severity of the problem
+                    "fileLocation": "absolute", // The location of the file
+                    "pattern": { // The pattern to match
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning):\\s+(.*)$", // The regular expression to match
                         "file": 1,
                         "line": 2,
                         "column": 3,
@@ -61,29 +61,6 @@
             },
             "env": {
                 "PATH": "${env.PATH};${workspaceFolder}/bin"  // Add the binary directory to the PATH environment variable
-            }
-        },        
-        {
-            "label": "archive",
-            "type": "shell",
-            "command": "ar",
-            "args": [
-                "rcs",
-                "${workspaceFolder}/lib/AF_Math.lib",
-                "${workspaceFolder}/obj/*.o"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [],
-            "group": "build",
-            "detail": "Archives the object files into the AF_Math static library",
-            "dependsOn": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
             }
         },
         {
