@@ -2,67 +2,40 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "BUILD_AF_Math_Win32_DLL",  // A label for the command
-            "type": "shell",  // Specifies that this is a shell command
-            "command": "g++",  // The command to execute (g++)
-            "args": [  // The arguments to pass to the command
-                "-fdiagnostics-color=always",  // Output diagnostic messages in color
-                "-g",  // Generate debugging information
-                "-I${workspaceFolder}/include",  // Add the include directory to the search path
-                "${workspaceFolder}/src/*.cpp",  // Compile all .cpp files in the source directory
-                //"-c",  // Compile only, do not link
-                "-Wall",  // Enable all warnings
-                "-Wextra",  // Enable extra warnings
-                "-Werror",  // Treat warnings as errors
-                "-pedantic",  // Issue all the mandatory diagnostics listed by the C++ standard
-                "-Wformat-security",  // Warn about format string vulnerabilities
-                "-Wnull-dereference",  // Warn about null pointer dereference
-                "-Wshadow",  // Warn about variable shadowing
-                "-fstack-protector-strong",  // Enable stack protection
-                "-D_FORTIFY_SOURCE=2",  // Enable fortified source code
-                "-shared",  // Create a shared library/DLL
-                "-DAF_MATH_EXPORTS",
-                "-o",  // Specify the output file
-                "${workspaceFolder}/bin/AF_Math.dll",  // The output file name and location
-                //"-static-libgcc",  // Link against libgcc statically
-                //"-static-libstdc++"//, // <-- add missing comma here
-                //"-m32"  // Compile for 64-bit architecture
+            "label": "BUILD_AF_Math_UnitTests",
+            "type": "shell",
+            "command": "make",
+            "args": [
+              "-j"
             ],
-
             "options": {
-                "cwd": "${workspaceFolder}"  // Set the current working directory to the workspace folder
+              "cwd": "${workspaceFolder}/build",
+              "env": {
+                "DYLD_LIBRARY_PATH": "${workspaceFolder}/bin"
+              }
             },
-            "problemMatcher": [ // The problem matcher to use
-                "$gcc",
-                {
-                    "owner": "cpp", // The owner of the problem matcher
-                    "severity": "warning", // The severity of the problem
-                    "fileLocation": "absolute", // The location of the file
-                    "pattern": { // The pattern to match
-                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning):\\s+(.*)$", // The regular expression to match
-                        "file": 1,
-                        "line": 2,
-                        "column": 3,
-                        "severity": 4,
-                        "message": 5
-                    }
+            "problemMatcher": [
+              "$gcc",
+              {
+                "owner": "cpp",
+                "severity": "warning",
+                "fileLocation": "absolute",
+                "pattern": {
+                  "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning):\\s+(.*)$",
+                  "file": 1,
+                  "line": 2,
+                  "column": 3,
+                  "severity": 4,
+                  "message": 5
                 }
+              }
             ],
             "group": {
-                "kind": "build",
-                "isDefault": true
+              "kind": "build",
+              "isDefault": true
             },
-            "detail": "Compiles the AF_Math library with g++ for Windows",  // A brief description of the task
-            "dependsOn": "clean",  // This task depends on the "clean" task to run first
-            "windows": {
-                "args": [  // Additional arguments for Windows
-                    
-                ]
-            },
-            "env": {
-                "PATH": "${env.PATH};${workspaceFolder}/bin"  // Add the binary directory to the PATH environment variable
-            }
-        },
+            "detail": ""
+          },
         {
             // Defines a task named "clean"
             "label": "clean",
