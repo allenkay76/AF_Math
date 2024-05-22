@@ -19,20 +19,20 @@ void RunUnitTests(){
     // Test dot product
     AF_Vec3 v7{1.0f,2.0f,3.0f};
     AF_Vec3 v8{2.0f,3.0f,4.0f};
-    float dotTest = dot(v7,v8);
+    float dotTest = AFV3_DOT(v7,v8);
     assert(dotTest == 20.0f);
 
     // Test cross product
     AF_Vec3 v9{1.0f,2.0f,3.0f};
     AF_Vec3 v10{2.0f,3.0f,4.0f};
-    AF_Vec3 v11 = cross(v9, v10);
+    AF_Vec3 v11 = AFV3_CROSS(v9, v10);
     assert(v11.x == -1.0f);
     assert(v11.y == 2.0f);
     assert(v11.z == -1.0f);
     
     // Test normalize
     AF_Vec3 v12{1.0f,2.0f,3.0f};
-    AF_Vec3 v13 = normalize(v12);
+    AF_Vec3 v13 = AFV3_NORMALIZE(v12);
     assert(v13.x == 0.26726124f);
     assert(v13.y == 0.53452248f);
     assert(v13.z == 0.80178368f);
@@ -41,18 +41,18 @@ void RunUnitTests(){
     // Test distance
     AF_Vec3 v14{1.0f,2.0f,3.0f};
     AF_Vec3 v15{2.0f,3.0f,4.0f};
-    float dist = distance(v14,v15);
+    float dist = AFV3_DISTANCE(v14,v15);
     assert(dist == 1.73205081f);
 
     // Test length
     AF_Vec3 v16{1.0f,2.0f,3.0f};
-    float len = magnitude(v16);
+    float len = AFV3_MAGNITUDE(v16);
     assert(len == 3.74165739f);
 
     // Test Projection
     AF_Vec3 v17{1.0f,2.0f,3.0f};
     AF_Vec3 v18{2.0f,3.0f,4.0f};
-    AF_Vec3 v19 = projection(v17,v18);
+    AF_Vec3 v19 = AFV3_PROJECTION(v17,v18);
     assert(v19.x == 1.37931037f);
     assert(v19.y == 2.06896544f);
     assert(v19.z == 2.75862074f);
@@ -66,7 +66,7 @@ void RunUnitTests(){
     vv1.push_back(v21);
     vv1.push_back(v22);
 
-    orthogonalize(&vv1[0], &vv1[1], &vv1[2]);
+    AFV3_ORTHOGANLIZE(&vv1[0], &vv1[1], &vv1[2]);
     // x
     assert(vv1[0].x == 0.707106829f);
     assert(vv1[0].y == 0.707106829f);
