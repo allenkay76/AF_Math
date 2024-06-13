@@ -1,2 +1,2 @@
 # AF_Math
-A simple dll example of a math library exported as a shared dynamical library or DLL.
+A c style header only math library to use in game projects.
