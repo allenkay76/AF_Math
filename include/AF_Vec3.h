@@ -71,6 +71,13 @@ extern "C" {
         return result;
     }
 
+  
+
+    // Equality check
+    static inline int AFV3_EQUAL(const AF_Vec3 v1, const AF_Vec3 v2){
+        return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z);
+    }
+
 
     // vec3_dot product of two vectors
     static inline float AFV3_DOT(AF_Vec3 v1, AF_Vec3 v2)
@@ -144,7 +151,8 @@ extern "C" {
         // Check for divide by zero
         float epsilon = 1e-6; // Threshold for considering magnitude as zero
         if(denom < epsilon){
-            return AF_Vec3{0.0f, 0.0f, 0.0f};
+            AF_Vec3 v3 = {0.0f, 0.0f, 0.0f};
+            return v3;
         }
         float scalar = nom / denom;
         

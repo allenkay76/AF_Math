@@ -15,10 +15,10 @@ extern "C" {
     static inline AF_Mat4 AFM4_ADD_M4(AF_Mat4 _leftM4, AF_Mat4 _rightM4)
     {
         AF_Mat4 result;
-        result.rows[0] = AFV4_ADD_V4(_leftM4.rows[0], _rightM4.rows[0]);
-        result.rows[1] = AFv4_ADD_V4(_leftM4.rows[1], _rightM4.rows[1]);
-        result.rows[2] = AFv4_ADD_V4(_leftM4.rows[2], _rightM4.rows[2]);
-        result.rows[3] = AFv4_ADD_V4(_leftM4.rows[3], _rightM4.rows[3]);
+        result.rows[0] = AFV4_ADD(_leftM4.rows[0], _rightM4.rows[0]);
+        result.rows[1] = AFV4_ADD(_leftM4.rows[1], _rightM4.rows[1]);
+        result.rows[2] = AFV4_ADD(_leftM4.rows[2], _rightM4.rows[2]);
+        result.rows[3] = AFV4_ADD(_leftM4.rows[3], _rightM4.rows[3]);
         return result;  
     }
 
@@ -26,10 +26,10 @@ extern "C" {
     static inline AF_Mat4 AFM4_MINUS_M4(AF_Mat4 _leftM4, AF_Mat4 _rightM4)
     {
         AF_Mat4 result;
-        result.rows[0] = AFV4_ADD_M4(_leftM4.rows[0], _rightM4.rows[0]);
-        result.rows[1] = AFV4_ADD_M4(_leftM4.rows[1], _rightM4.rows[1]);
-        result.rows[2] = AFV4_ADD_M4(_leftM4.rows[2], _rightM4.rows[2]);
-        result.rows[3] = AFV4_ADD_M4(_leftM4.rows[3], _rightM4.rows[3]);
+        result.rows[0] = AFV4_ADD(_leftM4.rows[0], _rightM4.rows[0]);
+        result.rows[1] = AFV4_ADD(_leftM4.rows[1], _rightM4.rows[1]);
+        result.rows[2] = AFV4_ADD(_leftM4.rows[2], _rightM4.rows[2]);
+        result.rows[3] = AFV4_ADD(_leftM4.rows[3], _rightM4.rows[3]);
         return result;  
     }
 
@@ -48,10 +48,10 @@ extern "C" {
     static inline AF_Mat4 AFM4_MULT_M4(AF_Mat4 _lefm4, AF_Mat4 _rightm4)
     {
         AF_Mat4 result;
-        result.rows[0] = mult_vec4(_lefm4.rows[0], _rightm4.rows[0]);
-        result.rows[1] = mult_vec4(_lefm4.rows[1], _rightm4.rows[1]);
-        result.rows[2] = mult_vec4(_lefm4.rows[2], _rightm4.rows[2]);
-        result.rows[3] = mult_vec4(_lefm4.rows[3], _rightm4.rows[3]);
+        result.rows[0] = AFV4_MULT(_lefm4.rows[0], _rightm4.rows[0]);
+        result.rows[1] = AFV4_MULT(_lefm4.rows[1], _rightm4.rows[1]);
+        result.rows[2] = AFV4_MULT(_lefm4.rows[2], _rightm4.rows[2]);
+        result.rows[3] = AFV4_MULT(_lefm4.rows[3], _rightm4.rows[3]);
         return result;  
     }
 
@@ -59,10 +59,10 @@ extern "C" {
     static inline AF_Mat4 AFM4_DIV_SCALAR(AF_Mat4 _v, float _f)    
     {
         AF_Mat4 result;
-        result.rows[0] = vec3_div_scalar(_v.rows[0], _f);
-        result.rows[1] = vec3_div_scalar(_v.rows[1], _f);
-        result.rows[2] = vec3_div_scalar(_v.rows[2], _f);
-        result.rows[3] = vec3_div_calar(_v.rows[3], _f);
+        result.rows[0] = AFV4_DIV_SCALAR(_v.rows[0], _f);
+        result.rows[1] = AFV4_DIV_SCALAR(_v.rows[1], _f);
+        result.rows[2] = AFV4_DIV_SCALAR(_v.rows[2], _f);
+        result.rows[3] = AFV4_DIV_SCALAR(_v.rows[3], _f);
         return result;
     }
 
@@ -70,15 +70,16 @@ extern "C" {
     static inline AF_Mat4 AFM4_DIV_M4(AF_Mat4 _lefm4, AF_Mat4 _rightm4)
     {
         AF_Mat4 result;
-        result.rows[0] = vec3_div_vec3(_lefm4.rows[0], _rightm4.rows[0]);
-        result.rows[1] = vec3_div_vec3(_lefm4.rows[1], _rightm4.rows[1]);
-        result.rows[2] = vec3_div_vec3(_lefm4.rows[2], _rightm4.rows[2]);
-        result.rows[3] = vec3_div_vec3(_lefm4.rows[3], _rightm4.rows[3]);
+        result.rows[0] = AFV4_DIV(_lefm4.rows[0], _rightm4.rows[0]);
+        result.rows[1] = AFV4_DIV(_lefm4.rows[1], _rightm4.rows[1]);
+        result.rows[2] = AFV4_DIV(_lefm4.rows[2], _rightm4.rows[2]);
+        result.rows[3] = AFV4_DIV(_lefm4.rows[3], _rightm4.rows[3]);
         return result;
     }
 
 
     // Dot product of two vectors
+    /*
     static inline float AFM4_DOT(AF_Mat4 _lefm4, AF_Mat4 _rightm4)
     {
         float dot = 0.0f;
@@ -98,7 +99,7 @@ extern "C" {
         cross.z = v1.x * v2.y - v1.y * v2.x;
         cross.w = 0.0f; // Cross product can only be calculated with 3D vectors
         return cross;
-    }
+    }*/
 
     // Normalize a vector
     // If the magnitude of the vector is zero, the vector is not modified
@@ -138,28 +139,29 @@ extern "C" {
 
     // Projection of one vector onto another
     // if denominator is zero, the vector returned is 0,0,0
-    static inline AF_Vec4 AFM4_PROJECTION(AF_Vec4 v1, AF_Vec4 v2){
+    static inline AF_Vec4 AFM4_PROJECTION(AF_Vec4 _v1, AF_Vec4 _v2){
         // project v1 onto v2
         // P = (P.Q/|Q|^2) * Q
 
         // Dot v1 . v2
-        float nom = AFV3_DOT(v1, v2);
+        float nom = AFV4_DOT(_v1, _v2);
 
         // Magnitude squared v2 ^2
-        float denom = AFV3_MAGNITUDE(v2);
+        float denom = AFV4_MAGNITUDE(_v2);
         denom *= denom;
 
         // nom / denom
         // Check for divide by zero
         float epsilon = 1e-6; // Threshold for considering magnitude as zero
         if(denom < epsilon){
-            return AF_Vec4{0.0f, 0.0f, 0.0f};
+            AF_Vec4 returnVec4 = {0.0f, 0.0f, 0.0f, 0.0f};
+            return returnVec4;
         }
         float scalar = nom / denom;
         
         // scalar * v2
-        AF_Vec4 v3 = AFV4_MULT_SCALAR(v2, scalar);
-        return v3;
+        AF_Vec4 _v3 = AFV4_MULT_SCALAR(_v2, scalar);
+        return _v3;
     }
 
 

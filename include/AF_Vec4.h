@@ -1,6 +1,7 @@
 #ifndef AF_VEC4_H
 #define AF_VEC4_H
 #include <math.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,6 +10,7 @@ extern "C" {
     typedef struct {
         float x, y, z, w;
     } AF_Vec4;
+
 
     //  addition by vector 3
     static inline AF_Vec4 AFV4_ADD(AF_Vec4 v1, AF_Vec4 v2)
@@ -20,6 +22,8 @@ extern "C" {
         result.w = v1.w + v2.w;
         return result;  
     } 
+
+    
 
 
     // subtraction by vector 3
@@ -64,6 +68,12 @@ extern "C" {
         result.z = v.z / f;
         result.w = v.w / f;
         return result;
+    }
+
+    // Equality
+    static inline bool AFV4_EQUAL(AF_Vec4 v1, AF_Vec4 v2)
+    {
+        return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w);
     }
 
     // division by vector 3
@@ -153,7 +163,8 @@ extern "C" {
         // Check for divide by zero
         float epsilon = 1e-6; // Threshold for considering magnitude as zero
         if(denom < epsilon){
-            return AF_Vec4{0.0f, 0.0f, 0.0f};
+            AF_Vec4 returnVec = {0.0f, 0.0f, 0.0f, 0.0f};
+            return returnVec;
         }
         float scalar = nom / denom;
         
