@@ -30,7 +30,7 @@ add_executable(AF_Math_test src/main.cpp)
 # Link against libraries
 target_link_libraries(AF_Math_test PRIVATE AF_Math)
 
-
+#
 
 # Set compiler flags
 target_compile_options(AF_Math_test PRIVATE
