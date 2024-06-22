@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
     typedef struct {
-        float x, y, z;
+        float x, y;
     } AF_Vec2;
 
     //  addition by vector 3
