@@ -1,6 +1,8 @@
 #ifndef AF_VEC4_H
 #define AF_VEC4_H
 #include <math.h>
+
+//#include <cmath> // Include cmath for std::tan
 #include <stdbool.h>
 
 #ifdef __cplusplus
