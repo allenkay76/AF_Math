@@ -10,8 +10,8 @@ extern "C" {
     typedef struct {
         AF_Vec4 rows[4];
     } AF_Mat4;
-
-    //  addition by vector 3
+    
+        //  addition by vector 3
     static inline AF_Mat4 AFM4_ADD_M4(AF_Mat4 _leftM4, AF_Mat4 _rightM4)
     {
         AF_Mat4 result;
@@ -44,7 +44,7 @@ extern "C" {
         return result;  
     }
 
-    // multiplication by vector 3
+    // multiplication by mat 4
     static inline AF_Mat4 AFM4_MULT_M4(AF_Mat4 _lefm4, AF_Mat4 _rightm4)
     {
         AF_Mat4 result;
@@ -55,6 +55,39 @@ extern "C" {
         return result;  
     }
 
+	// Function to multiply two 4x4 matrices
+	static inline AF_Mat4 AFM4_DOT_M4(AF_Mat4 left, AF_Mat4 right) {
+	    AF_Mat4 result = {{
+		{0.0f, 0.0f, 0.0f, 0.0f},
+		{0.0f, 0.0f, 0.0f, 0.0f},
+		{0.0f, 0.0f, 0.0f, 0.0f},
+		{0.0f, 0.0f, 0.0f, 0.0f}
+	    }};
+
+	    for (int i = 0; i < 4; ++i) {
+		result.rows[i].x = left.rows[i].x * right.rows[0].x +
+				   left.rows[i].y * right.rows[1].x +
+				   left.rows[i].z * right.rows[2].x +
+				   left.rows[i].w * right.rows[3].x;
+
+		result.rows[i].y = left.rows[i].x * right.rows[0].y +
+				   left.rows[i].y * right.rows[1].y +
+				   left.rows[i].z * right.rows[2].y +
+				   left.rows[i].w * right.rows[3].y;
+
+		result.rows[i].z = left.rows[i].x * right.rows[0].z +
+				   left.rows[i].y * right.rows[1].z +
+				   left.rows[i].z * right.rows[2].z +
+				   left.rows[i].w * right.rows[3].z;
+
+		result.rows[i].w = left.rows[i].x * right.rows[0].w +
+				   left.rows[i].y * right.rows[1].w +
+				   left.rows[i].z * right.rows[2].w +
+				   left.rows[i].w * right.rows[3].w;
+	    }
+
+	    return result;
+	}
     // division by scalar
     static inline AF_Mat4 AFM4_DIV_SCALAR(AF_Mat4 _v, float _f)    
     {
