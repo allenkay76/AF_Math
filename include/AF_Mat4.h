@@ -11,6 +11,26 @@ extern "C" {
         AF_Vec4 rows[4];
     } AF_Mat4;
     
+    static inline AF_Mat4 AFM4_IDENTITY(void){
+	AF_Mat4 returnMatrix = {{
+		{1.0f, 0.0f, 0.0f, 0.0f},
+		{0.0f, 1.0f, 0.0f, 0.0f},
+    		{0.0f, 0.0f, 1.0f, 0.0f},
+		{0.0f, 0.0f, 0.0f, 1.0f}			// Row order position
+	}};
+	return returnMatrix;
+    }
+
+    static inline AF_Mat4 AFM4_ZERO(void){
+	AF_Mat4 returnMatrix = {{
+		{0.0f, 0.0f, 0.0f, 0.0f},
+		{0.0f, 0.0f, 0.0f, 0.0f},
+    		{0.0f, 0.0f, 0.0f, 0.0f},
+		{0.0f, 0.0f, 0.0f, 0.0f}			// Row order position
+	}};
+	return returnMatrix;
+    }
+
         //  addition by vector 3
     static inline AF_Mat4 AFM4_ADD_M4(AF_Mat4 _leftM4, AF_Mat4 _rightM4)
     {
@@ -197,7 +217,64 @@ extern "C" {
         return _v3;
     }
 
+    // Calculate rotation and return mat4
+    static inline AF_Mat4 AFM4_ROTATE_V4(AF_Mat4 _matrixToRotate, AF_Vec4 _rotation){
+	// Apply rotation
+	// x axis matrix
+	float cosX = cos(_rotation.x);
+	float sinX = sin(_rotation.x);
+	AF_Vec4 row1 = _matrixToRotate.rows[0];
+	AF_Vec4 row2 = _matrixToRotate.rows[1];
+	AF_Vec4 row3 = _matrixToRotate.rows[2];
+	AF_Vec4 row4 = _matrixToRotate.rows[3];
+	AF_Mat4 xAxisMatrix = {{
+		row1,
+		{row2.x, cosX, -sinX, row2.w},
+    		{row3.x, sinX, cosX, row3.w},
+		row4			// Row order position
+	}};
 
+	// y axis matrix 
+	float cosY = cos(_rotation.y);
+	float sinY = sin(_rotation.y);
+	AF_Mat4 yAxisMatrix = {{
+		{cosY, row1.y, sinY, row1.w},
+		row2,
+    		{-sinY, row3.y, cosY, row3.w},
+		row4			// Row order position
+	}};
+
+	// z axis matrix 
+	float cosZ = cos(_rotation.z);
+	float sinZ = sin(_rotation.z);
+	AF_Mat4 zAxisMatrix = {{
+		{cosZ, -sinZ, row1.z, row1.w},
+		{sinZ, cosZ, row2.z, row2.w},
+    		row3,
+		row4			// Row order position
+	}};
+
+	AF_Mat4 rotatedMatrix = AFM4_DOT_M4(AFM4_DOT_M4(zAxisMatrix, yAxisMatrix), xAxisMatrix);
+
+	return rotatedMatrix;
+}
+
+    inline static AF_Mat4 AFM4_SCALE_V4(AF_Mat4 _matrixToScale, AF_Vec4 _scale){
+	AF_Vec4 row1 = _matrixToScale.rows[0];
+	AF_Vec4 row2 = _matrixToScale.rows[1];
+	AF_Vec4 row3 = _matrixToScale.rows[2];
+	AF_Vec4 row4 = _matrixToScale.rows[3];
+
+	// Apply scale
+	AF_Mat4 scaleMatrix = {{
+		{_scale.x * row1.x, row1.y, row1.z, row1.w},
+		{row2.x, _scale.y * row2.y, row2.z, row2.w},
+    		{row3.x, row3.y, _scale.z * row3.z, row3.w},
+		{row4.x, row4.y, row4.z, row4.w}			// Row order position
+	}};
+	return scaleMatrix;
+
+    }
 #ifdef __cplusplus
 }
 #endif
