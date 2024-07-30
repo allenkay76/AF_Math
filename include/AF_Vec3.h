@@ -10,6 +10,10 @@ extern "C" {
         float x, y, z;
     } AF_Vec3;
 
+    static inline AF_Vec3 AFV3_ZERO(void){
+	AF_Vec3 returnVec = {0.0f, 0.0f, 0.0f};
+	return returnVec;
+    }
     //  addition by vector 3
     static inline AF_Vec3 AFV3_ADD(AF_Vec3 v1, AF_Vec3 v2)
     {

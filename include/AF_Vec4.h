@@ -14,6 +14,10 @@ extern "C" {
     } AF_Vec4;
 
 
+    static inline AF_Vec4 AFV4_ZERO(void){
+	AF_Vec4 returnVec = {0.0f, 0.0f, 0.0f, 0.0f};
+	return returnVec;
+    }
     //  addition by vector 3
     static inline AF_Vec4 AFV4_ADD(AF_Vec4 v1, AF_Vec4 v2)
     {
