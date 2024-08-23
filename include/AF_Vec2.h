@@ -115,6 +115,22 @@ extern "C" {
         return sqrt(distance);
     }
 
+/*
+====================
+AFV2_ROTATE_TWARDS
+Function for calculating a rotation angle value between two 2d point
+====================
+*/
+
+static inline float AFV2_ROTATE_TOWARDS(AF_Vec2 _pos1, AF_Vec2 _pos2){
+	// Rotate towards pos2
+	float rotDistX = (_pos1.x - _pos2.x);
+	float rotDistY = (_pos1.y - _pos2.y);
+	float lookatAngle = atan2(rotDistX, rotDistY);
+	return lookatAngle;
+
+
+}
 
 
 #ifdef __cplusplus
